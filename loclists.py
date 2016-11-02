@@ -9,7 +9,7 @@ def tests():
     assert(check_unresolved('nyc') == 'United States')
     assert(check_unresolved('perú') == 'Peru')
     assert(check_unresolved('###############') == None)
-    print 'tests pass'
+    print('tests pass')
 
 
 fix_unresolved = {

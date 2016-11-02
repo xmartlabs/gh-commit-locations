@@ -12,8 +12,8 @@ for line in open('unresolved_locations.txt','r'):
     locations[loc] += cnt
     totalcnt += cnt
 
-print totalcnt
+print(totalcnt)
 
 locsorted = sorted(locations.iteritems(), key=operator.itemgetter(1), reverse=True)
 for loc, cnt in locsorted:
-    print '%s\t%d' % (loc, cnt)
+    print('%s\t%d' % (loc, cnt))
