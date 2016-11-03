@@ -2,7 +2,8 @@
 
 def check_unresolved(locstr):
     for key in fix_unresolved:
-        if locstr in key: return fix_unresolved[key]
+        if locstr in key:
+            return fix_unresolved[key]
 
 
 def tests():
@@ -15,40 +16,41 @@ def tests():
 fix_unresolved = {
     frozenset(['nyc', 'silicon valley', 'sf', 'uiuc', 'new england', 'philly', 'ucla', 'west coast', 'potrero, sf', 'cape may court house', 'u.s.a.', 'rit', 'northwest', 'trabuco canyon', 'west philly', 'mit', 'unlv', 'chicagoland', 'sdut', 'ucsc', 'pdx', 'u s a']): 'United States',
     frozenset(['montreal', 'montreal, qc', 'montréal, québec', 'québec', 'montréal', 'quebec', 'prévost', 'montréal, qc', 'tiohtiake', 'montreal, quebec']): 'Canada',
-    frozenset(['england', 'scotland', 'oxfordshire', 'oxfordshire, england', 'u.k.', 'snowdonia, north wales', 'broughty ferry, scotland', 'cambrdige', 'u k', 'devon, england', 'bonnie scotland', 'bonsall, derbyshire']): 'United Kingdom',
+    frozenset(['england', 'scotland', 'oxfordshire', 'oxfordshire, england', 'u.k.', 'north wales', 'cambrdige', 'u k', 'devon, england', 'bonnie scotland', 'bonsall, derbyshire', 'edinburgh', 'wales', 'south wales', 'northern ireland' ]): 'United Kingdom',
     frozenset(['munich', 'cologne', 'münchen', 'deutschland', 'düsseldorf', 'nürnberg', 'köln', 'göttingen', 'osnabrück', 'isny', 'duesseldorf', 'montabaur', 'münster']): 'Germany',
     frozenset(['são paulo, brasil', 'brasil', 'são paulo', 'são paulo - sp', 'sao paulo', 'são paulo - brasil', 'são paulo, sp, brasil', 'são paulo, sp', 'goiânia', 'joão pessoa', 'três rios - rj', 'florianópolis', 'santo andre - sp - brasil', 'são paulo - sp - brasil', 'são paulo sp', 'são paulo brasil', 'três rios rj', 'são paulo sp brasil', 'santo andre sp brasil', 'brasilia']): 'Brazil',
-    frozenset(['russian federation', 'ekaterinburg', 'ulyanovsk', 'Москва', 'stary oskol', 'nizhny novgorod', 'moskow', 'ptz', 'russian', 'rnd', 'blagoveschensk, amur region, russian federation', 'Набережные Челны', 'Россия, Москва, Ногинск']): 'Russia',
+    frozenset(['russian federation', 'ekaterinburg', 'ulyanovsk', 'mосква', 'stary oskol', 'nizhny novgorod', 'moskow', 'ptz', 'russian', 'rnd', 'blagoveschensk, amur region, russian federation', 'Набережные Челны', 'Россия, Москва, Ногинск', 'россия']): 'Russia',
     frozenset(['chambéry', 'meyrargues', 'auvergne', 'rueil malmaison', 'evry', 'aix en provence', 'gex']): 'France',
     frozenset(['korea']): 'South Korea',
-    frozenset(['istanbul', 'eskisehir', 'izmir']): 'Turkey',
-    frozenset(['hyderabad', 'varanasi', 'bengaluru', 'ahmedabad', 'kerala', 'gandhinagar, gujarat', 'kolkata']): 'India',
+    frozenset(['istanbul', 'eskisehir', 'izmir', 'i̇stanbul']): 'Turkey',
+    frozenset(['hyderabad', 'varanasi', 'bengaluru', 'ahmedabad', 'kerala', 'gandhinagar, gujarat', 'kolkata', 'bangalore']): 'India',
     frozenset(['zurich', 'zürich', 'neuchatel', 'lucerne', 'paudex', 'stäfa', 'geneve']): 'Switzerland',
-    frozenset(['méxico', 'méxico city', 'uruapan michoacán méxico']): 'Mexico',
+    frozenset(['méxico', 'méxico city', 'uruapan michoacán méxico', 'méxico, d.f.']): 'Mexico',
     frozenset(['sapporo', 'osaka', 'yokohama', 'japanese', 'kagurazaka', 'kanagawa', 'nagoya', 'chiba', 'ja', '東京', 'kagurazaka']): 'Japan',
     frozenset(['göteborg', 'linköping', 'gothenburg', 'swedish igloo']): 'Sweden',
-    frozenset(['europe->poland->gorzow', 'kraków', 'wrocław', 'cracow', 'warszawa', 'dąbrowa górnicza, polska', 'europe >poland >gorzow']): 'Poland',
+    frozenset(['europe->poland->gorzow', 'kraków', 'wrocław', 'cracow', 'warszawa', 'dąbrowa górnicza, polska', 'wroclaw']): 'Poland',
     frozenset(['bucuresti', 'bucurești, românia', 'iaşi, românia', 'cluj-napoca', 'iasi', 'cluj napoca']): 'Romania',
     frozenset(['ghent', 'bruxelles', 'liège']): 'Belgium',
     frozenset(['ukreine', 'lviv', 'kyiv', 'kharkov', 'cherkassy']): 'Ukraine',
     frozenset(['patagonya']): 'Argentina',
     frozenset(['valparaíso']): 'Chile',
     frozenset(['gansu', "xi'an", 'beijng', 'hang zhou', '杭州', '福建厦门', '上海', '江苏苏州', '中国天津', '北京', '广州', '中国', '河南焦作', '家', '杭州西湖区', '广东 深圳', '中国深圳', 'beijingchina', '昆明']): 'China',
-    frozenset(['medellin', 'envigado! :']): 'Colombia',
-    frozenset(['czech rebublic']): 'Czech Republic',
+    frozenset(['medellin', 'envigado', 'bogota']): 'Colombia',
+    frozenset(['czech rebublic', 'praha']): 'Czech Republic',
     frozenset(['itämerenkatu 13', 'itämerenkatu']): 'Finland',
     frozenset(['soerabaja, east java']): 'Indonesia',
-    frozenset(['milano', 'turin', 'mozzanella', 'italia']): 'Italy',
-    frozenset(['almere', 'antwerp', 'flanders, eu', 'uddel']): 'Netherlands',
+    frozenset(['milano', 'turin', 'mozzanella', 'italia', 'roma', 'milan']): 'Italy',
+    frozenset(['almere', 'antwerp', 'flanders, eu', 'uddel', 'nederland']): 'Netherlands',
     frozenset(['perú']): 'Peru',
     frozenset(['phillipines']): 'Philippines',
-    frozenset(['catalunya', 'canary islands', 'seville', 'santa Úrsula', 'piera']): 'Spain',
+    frozenset(['catalunya', 'canary islands', 'seville', 'santa Úrsula', 'piera', 'españa']): 'Spain',
     frozenset(['taoyuan']): 'Taiwan',
     frozenset(['viet nam', 'hanoi', 'ha noi, viet nam', 'ha noi - viet nam', 'ha noi', 'ha noi viet nam', 'hà nội, việt nam']): 'Vietnam',
     frozenset(['tehran']): 'Iran',
     frozenset(['joburg', "jo'burg"]): 'South Africa',
     frozenset(['luxemburg']): 'Luxembourg',
-    frozenset(['københavn']): 'Denmark'
+    frozenset(['københavn']): 'Denmark',
+    frozenset(['lisboa']): 'Portugal'
 
 #    frozenset([]): 'Australia',
 #    frozenset([]): 'Austria',

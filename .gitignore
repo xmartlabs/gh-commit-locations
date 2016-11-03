@@ -5,3 +5,5 @@
 *.png
 *.css
 data/*
+
+.idea/

@@ -47,7 +47,7 @@ def test_locs(locs):
                     return countries[largestcity[-1]]['name']
 
 
-def determine_country(locstr, langcnt):
+def determine_country(locstr):
     """Try to determine country from given location string."""
 
     locstr = re.sub(re_ws, ' ', re.sub(re_ignore, ' ', locstr)).strip()
@@ -59,7 +59,6 @@ def determine_country(locstr, langcnt):
     for sc in [',', '/', '-', ' ', ':', '#', '->']:
         splitted = locstr.split(sc)
         splitted.reverse()
-        print(splitted)
         country = test_locs(splitted)
         if country is not None:
             countries_by_locstr[locstr] = country
@@ -71,4 +70,36 @@ def determine_country(locstr, langcnt):
         countries_by_locstr[locstr] = country
         return country
 
-    unresolved_locations.append('%s, %d' % (locstr, langcnt))
+
+def test():
+    """Test with users from BigQuery"""
+    with open('/Users/mathiasclaasen/Documents/user-locations/users.csv', 'r') as fcsv:
+        reader = csv.reader(fcsv)
+        next(reader)
+        countrymap = []
+        unresolved = {}
+        amount = 0
+        for record in reader:
+            amount += 1
+            user, location = record
+            country = determine_country(location)
+            if country is not None:
+                countrymap.append((user, country))
+            else:
+                if location not in unresolved:
+                    unresolved[location] = 1
+                else:
+                    unresolved[location] += 1
+
+    print("Percentage of unresolved locations=", len(unresolved) / amount)
+    wcsv = open('/Users/mathiasclaasen/Documents/user-locations/users_to_countries.csv', 'w')
+    writer = csv.writer(wcsv, quoting=csv.QUOTE_MINIMAL)
+    writer.writerow(['User', 'Country'])
+    for c in countrymap:
+        writer.writerow([c[0], c[1]])
+    wcsv.close()
+
+    uf = open('/Users/mathiasclaasen/Documents/user-locations/unresolved_locations.txt', 'w')
+    for l, c in sorted(unresolved.items(), key=lambda x: x[1]):
+        uf.write('{} -> {}\n'.format(l, c))
+    uf.close()
