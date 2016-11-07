@@ -1,8 +1,9 @@
 import csv, json, re
 from geonamescache import GeonamesCache
 from loclists import check_unresolved
+from os import path
 
-
+BASE_URL = "data/"
 countries_by_locstr = {}
 gc = GeonamesCache()
 countries = gc.get_countries()
@@ -56,7 +57,7 @@ def determine_country(locstr):
         return countries_by_locstr[locstr]
 
     # try different split chars
-    for sc in [',', '/', '-', ' ', ':', '#', '->']:
+    for sc in [',', '/', '-', ' ', ':', '#', '->', '\\']:
         splitted = locstr.split(sc)
         splitted.reverse()
         country = test_locs(splitted)
@@ -71,14 +72,15 @@ def determine_country(locstr):
         return country
 
 
-def test():
+def parse_BigQuery_users():
     """Test with users from BigQuery"""
-    with open('/Users/mathiasclaasen/Documents/user-locations/users.csv', 'r') as fcsv:
+    with open(path.join(BASE_URL, 'users.csv'), 'r') as fcsv:
         reader = csv.reader(fcsv)
         next(reader)
         countrymap = []
         unresolved = {}
         amount = 0
+        incorrect = 0
         for record in reader:
             amount += 1
             user, location = record
@@ -86,20 +88,58 @@ def test():
             if country is not None:
                 countrymap.append((user, country))
             else:
+                incorrect += 1
                 if location not in unresolved:
                     unresolved[location] = 1
                 else:
                     unresolved[location] += 1
 
-    print("Percentage of unresolved locations=", len(unresolved) / amount)
-    wcsv = open('/Users/mathiasclaasen/Documents/user-locations/users_to_countries.csv', 'w')
+    print("Percentage of unresolved locations=", incorrect / amount)
+    wcsv = open(path.join(BASE_URL, 'users_to_countries.csv'), 'w')
     writer = csv.writer(wcsv, quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['User', 'Country'])
     for c in countrymap:
         writer.writerow([c[0], c[1]])
     wcsv.close()
 
-    uf = open('/Users/mathiasclaasen/Documents/user-locations/unresolved_locations.txt', 'w')
+    uf = open(path.join(BASE_URL, 'unresolved_locations.txt'), 'w')
+    for l, c in sorted(unresolved.items(), key=lambda x: x[1]):
+        uf.write('{} -> {}\n'.format(l, c))
+    uf.close()
+
+
+def parse_gh_top_users(fileurl):
+    wcsv = open(path.join(BASE_URL, 'gh_top_users.csv'), 'w')
+    writer = csv.writer(wcsv, quoting=csv.QUOTE_MINIMAL)
+    writer.writerow(["ID","Login","Joined","Location","Email","Avatar","GravatarId","Name","Company","Blog","Hireable","Bio","Public repos","Public gists","Followers","Following"])
+    with open(fileurl) as data_file:    
+        data = json.load(data_file)
+        unresolved = {}
+        parsed = 0
+        incorrect = 0
+        for user in data:
+            location = user['location']
+            if location is not None:
+                country = determine_country(location)
+                if country is not None:
+                    parsed += 1
+                    writer.writerow([user['id'], user['login'], user['created_at'], country, user['email'],
+                        user['avatar_url'], user['gravatar_id'], user['name'], user['company'], user['blog'], user['hireable'], 
+                        user['bio'], user['public_repos'], user['public_gists'], user['followers'], user['following']])
+                    continue
+                else:
+                    incorrect += 1
+                    if location not in unresolved:
+                        unresolved[location] = 1
+                    else:
+                        unresolved[location] += 1
+            writer.writerow([user['id'], user['login'], user['created_at'], '', user['email'], 
+                        user['avatar_url'], user['gravatar_id'], user['name'], user['company'], user['blog'], user['hireable'], 
+                        user['bio'], user['public_repos'], user['public_gists'], user['followers'], user['following']])
+        print("Parsed {} from {} ({}) of {} total users".format(parsed, incorrect + parsed, parsed / (incorrect + parsed), len(data)))
+    wcsv.close()
+
+    uf = open(path.join(BASE_URL, 'unresolved_locations_top.txt'), 'w')
     for l, c in sorted(unresolved.items(), key=lambda x: x[1]):
         uf.write('{} -> {}\n'.format(l, c))
     uf.close()

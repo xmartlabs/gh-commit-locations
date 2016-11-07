@@ -16,10 +16,10 @@ def tests():
 fix_unresolved = {
     frozenset(['nyc', 'silicon valley', 'sf', 'uiuc', 'new england', 'philly', 'ucla', 'west coast', 'potrero, sf', 'cape may court house', 'u.s.a.', 'rit', 'northwest', 'trabuco canyon', 'west philly', 'mit', 'unlv', 'chicagoland', 'sdut', 'ucsc', 'pdx', 'u s a']): 'United States',
     frozenset(['montreal', 'montreal, qc', 'montréal, québec', 'québec', 'montréal', 'quebec', 'prévost', 'montréal, qc', 'tiohtiake', 'montreal, quebec']): 'Canada',
-    frozenset(['england', 'scotland', 'oxfordshire', 'oxfordshire, england', 'u.k.', 'north wales', 'cambrdige', 'u k', 'devon, england', 'bonnie scotland', 'bonsall, derbyshire', 'edinburgh', 'wales', 'south wales', 'northern ireland' ]): 'United Kingdom',
+    frozenset(['england', 'scotland', 'oxfordshire', 'oxfordshire, england', 'u.k.', 'north wales', 'cambrdige', 'u k', 'devon, england', 'bonnie scotland', 'bonsall, derbyshire', 'edinburgh', 'glasgow', 'wales', 'south wales', 'northern ireland', 'edinburgh, scotland', 'glasgow, scotland' ]): 'United Kingdom',
     frozenset(['munich', 'cologne', 'münchen', 'deutschland', 'düsseldorf', 'nürnberg', 'köln', 'göttingen', 'osnabrück', 'isny', 'duesseldorf', 'montabaur', 'münster']): 'Germany',
     frozenset(['são paulo, brasil', 'brasil', 'são paulo', 'são paulo - sp', 'sao paulo', 'são paulo - brasil', 'são paulo, sp, brasil', 'são paulo, sp', 'goiânia', 'joão pessoa', 'três rios - rj', 'florianópolis', 'santo andre - sp - brasil', 'são paulo - sp - brasil', 'são paulo sp', 'são paulo brasil', 'três rios rj', 'são paulo sp brasil', 'santo andre sp brasil', 'brasilia']): 'Brazil',
-    frozenset(['russian federation', 'ekaterinburg', 'ulyanovsk', 'mосква', 'stary oskol', 'nizhny novgorod', 'moskow', 'ptz', 'russian', 'rnd', 'blagoveschensk, amur region, russian federation', 'Набережные Челны', 'Россия, Москва, Ногинск', 'россия']): 'Russia',
+    frozenset(['russian federation', 'ekaterinburg', 'ulyanovsk', 'mосква', 'Москва', 'stary oskol', 'nizhny novgorod', 'moskow', 'russian', 'blagoveschensk, amur region, russian federation', 'Набережные Челны', 'Россия, Москва, Ногинск', 'россия']): 'Russia',
     frozenset(['chambéry', 'meyrargues', 'auvergne', 'rueil malmaison', 'evry', 'aix en provence', 'gex']): 'France',
     frozenset(['korea']): 'South Korea',
     frozenset(['istanbul', 'eskisehir', 'izmir', 'i̇stanbul']): 'Turkey',
