@@ -72,9 +72,9 @@ def determine_country(locstr):
         return country
 
 
-def parse_BigQuery_users():
-    """Test with users from BigQuery"""
-    with open(path.join(BASE_URL, 'users.csv'), 'r') as fcsv:
+def parse_users_from_csv(filename='users.csv'):
+    """Parse user locations in CSV format: 'user, location'"""
+    with open(path.join(BASE_URL, filename), 'r') as fcsv:
         reader = csv.reader(fcsv)
         next(reader)
         countrymap = []
@@ -94,7 +94,10 @@ def parse_BigQuery_users():
                 else:
                     unresolved[location] += 1
 
+    # print statistics of results
     print("Percentage of unresolved locations=", incorrect / amount)
+
+    # write output file
     wcsv = open(path.join(BASE_URL, 'users_to_countries.csv'), 'w')
     writer = csv.writer(wcsv, quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['User', 'Country'])
@@ -102,16 +105,21 @@ def parse_BigQuery_users():
         writer.writerow([c[0], c[1]])
     wcsv.close()
 
+    # write the locations we could not parse
     uf = open(path.join(BASE_URL, 'unresolved_locations.txt'), 'w')
     for l, c in sorted(unresolved.items(), key=lambda x: x[1]):
         uf.write('{} -> {}\n'.format(l, c))
     uf.close()
 
 
-def parse_gh_top_users(fileurl):
-    wcsv = open(path.join(BASE_URL, 'gh_top_users.csv'), 'w')
+def parse_gh_users(fileurl):
+    """Parse GitHub user json data."""
+    # file where we write the output
+    wcsv = open(path.join(BASE_URL, 'gh_users.csv'), 'w')
     writer = csv.writer(wcsv, quoting=csv.QUOTE_MINIMAL)
     writer.writerow(["ID","Login","Joined","Location","Email","Avatar","GravatarId","Name","Company","Blog","Hireable","Bio","Public repos","Public gists","Followers","Following"])
+
+    # open input json file
     with open(fileurl) as data_file:    
         data = json.load(data_file)
         unresolved = {}
@@ -133,12 +141,16 @@ def parse_gh_top_users(fileurl):
                         unresolved[location] = 1
                     else:
                         unresolved[location] += 1
+
+            # if the country could not be parsed, write an empty location
             writer.writerow([user['id'], user['login'], user['created_at'], '', user['email'], 
                         user['avatar_url'], user['gravatar_id'], user['name'], user['company'], user['blog'], user['hireable'], 
                         user['bio'], user['public_repos'], user['public_gists'], user['followers'], user['following']])
-        print("Parsed {} from {} ({}) of {} total users".format(parsed, incorrect + parsed, parsed / (incorrect + parsed), len(data)))
+        # print statistics of results
+        print("Parsed {} from {} ({}%) of {} total users".format(parsed, incorrect + parsed, parsed / (incorrect + parsed), len(data)))
     wcsv.close()
 
+    # write the locations we could not parse
     uf = open(path.join(BASE_URL, 'unresolved_locations_top.txt'), 'w')
     for l, c in sorted(unresolved.items(), key=lambda x: x[1]):
         uf.write('{} -> {}\n'.format(l, c))
